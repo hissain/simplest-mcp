@@ -44,16 +44,13 @@ To use this server with Claude Desktop, edit your configuration file:
 **For Remote Server (SSE):**
 ```json
 {
-  "mcpServers": {
     "simplest-mcp-remote": {
-      "command": "npx",
+      "command": "node",
       "args": [
-        "-y",
-        "@modelcontextprotocol/server-sse-client",
+        "/absolute/path/to/simplest-mcp/remote/proxy.js",
         "https://simplest-mcp.your-subdomain.workers.dev/sse"
       ]
     }
-  }
 }
 ```
 
@@ -189,16 +186,13 @@ npm run client:remote -- http://localhost:8787
 **Remote:**
 ```json
 {
-  "mcpServers": {
     "simplest-mcp-remote": {
-      "command": "npx",
+      "command": "node",
       "args": [
-        "-y",
-        "@modelcontextprotocol/server-sse-client",
+        "/absolute/path/to/simplest-mcp/remote/proxy.js",
         "https://your-worker.workers.dev/sse"
       ]
     }
-  }
 }
 ```
 
