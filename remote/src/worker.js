@@ -283,25 +283,22 @@ export default {
                     const endpointUrl = `${urlObj.origin}/mcp?sessionId=${sessionId}`;
                     controller.enqueue(encoder.encode(`event: endpoint\ndata: ${endpointUrl}\n\n`));
 
-                    // Send initial connection message
-                    const initMessage = JSON.stringify({
-                        jsonrpc: '2.0',
-                        method: 'connection/ready',
-                        params: { serverInfo: { name: 'simplest-mcp-server', version: '1.0.0' } }
-                    });
-                    controller.enqueue(encoder.encode(`data: ${initMessage}\n\n`));
-
-                    // Send server capabilities
-                    const capsMessage = JSON.stringify({
-                        jsonrpc: '2.0',
-                        method: 'server/capabilities',
-                        params: {
-                            prompts: Object.keys(PROMPTS),
-                            tools: TOOLS.map(t => t.name),
-                            resources: RESOURCES.map(r => r.uri)
+                    // Keep connection alive with periodic comments
+                    const keepAliveInterval = setInterval(() => {
+                        try {
+                            controller.enqueue(encoder.encode(`: keepalive\n\n`));
+                        } catch (e) {
+                            clearInterval(keepAliveInterval);
                         }
+                    }, 15000);
+
+                    // Clean up interval when stream is cancelled
+                    request.signal.addEventListener('abort', () => {
+                        clearInterval(keepAliveInterval);
                     });
-                    controller.enqueue(encoder.encode(`data: ${capsMessage}\n\n`));
+                },
+                cancel() {
+                    // Cleanup handled in abort listener, but good practice to have here too
                 }
             });
 
