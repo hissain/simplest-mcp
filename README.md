@@ -22,6 +22,9 @@ graph TD
         RemoteClient["Client (IDE/CLI)"] <-->|SSE/POST| Worker["Worker Server"]
         Worker <--> CloudRes["In-Memory Resources"]
     end
+
+    %% Force vertical layout
+    Resources ~~~ RemoteClient
 ```
 
 ## ✨ Features
@@ -196,85 +199,6 @@ async with stdio_client(server_params) as (read, write):
         print(tools)
 ```
 
-### Prompts
-
-#### creative-writing
-Generate creative writing prompts.
-
-**Arguments:**
-- `topic` (required): The topic to write about
-- `style` (optional): Writing style (formal, casual, poetic)
-
-#### code-review
-Generate code review prompts.
-
-**Arguments:**
-- `language` (required): Programming language
-- `code` (required): Code to review
-
-#### explain-concept
-Generate concept explanation prompts.
-
-**Arguments:**
-- `concept` (required): The concept to explain
-- `level` (optional): Expertise level (beginner, intermediate, advanced)
-
-### Tools
-
-#### calculate
-Perform arithmetic operations.
-
-**Parameters:**
-- `operation`: "add" | "subtract" | "multiply" | "divide"
-- `a`: number
-- `b`: number
-
-**Returns:** Calculation result
-
-#### generate-uuid
-Generate a random UUID.
-
-**Parameters:** None
-
-**Returns:** UUID string
-
-#### get-weather
-Get simulated weather data.
-
-**Parameters:**
-- `city`: string
-
-**Returns:** Weather information (simulated)
-
-#### reverse-string
-Reverse a text string.
-
-**Parameters:**
-- `text`: string
-
-**Returns:** Reversed string
-
-### Resources
-
-#### quotes://all
-Get all programming quotes.
-
-**Returns:** JSON array of quote objects
-
-#### quotes://random
-Get a random quote.
-
-**Returns:** Single quote object
-
-#### facts://all
-Get all technology facts.
-
-**Returns:** JSON array of fact objects
-
-#### facts://random
-Get a random fact.
-
-**Returns:** Single fact object
 
 ## Testing
 
