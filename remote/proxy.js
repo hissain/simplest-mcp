@@ -5,45 +5,64 @@
  * Usage: node proxy.js <sse-url>
  */
 
+
+// Debugging disabled for production
+function log(msg) {
+    // console.error(`[Proxy] ${msg}`); // Uncomment for stderr logging
+}
+
+log("Proxy started");
+
 const sseUrl = process.argv[2];
 if (!sseUrl) {
+    log("Error: No SSE URL provided");
     console.error("Usage: node proxy.js <sse-url>");
     process.exit(1);
 }
 
 // Derive POST URL from SSE URL (replace /sse with /mcp)
-const postUrl = sseUrl.replace(/\/sse$/, '/mcp');
+// Initial guess, will be updated by endpoint event
+let postUrl = sseUrl.replace(/\/sse$/, '/mcp');
+log(`SSE URL: ${sseUrl}`);
+log(`POST URL: ${postUrl}`);
 
 // Stdio Setup
 const stdin = process.stdin;
 const stdout = process.stdout;
 
 // Buffer for stdin
-let buffer = '';
+let inputBuffer = '';
 
 // Handle Stdio Input (Requests from IDE)
 stdin.on('data', async (chunk) => {
-    const data = chunk.toString();
-    const lines = data.split('\n');
+    log(`Received chunk (${chunk.length} bytes): ${JSON.stringify(chunk.toString())}`);
+    inputBuffer += chunk.toString();
 
-    for (const line of lines) {
+    let newlineIndex;
+    while ((newlineIndex = inputBuffer.indexOf('\n')) !== -1) {
+        const line = inputBuffer.slice(0, newlineIndex);
+        inputBuffer = inputBuffer.slice(newlineIndex + 1);
+
         if (line.trim()) {
             try {
+                log(`Forwarding line to ${postUrl}: ${line}`);
                 // Forward to Remote Server via POST
-                // console.error(`[Proxy] Forwarding: ${line}`);
                 const response = await fetch(postUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: line
                 });
 
+                log(`Response status: ${response.status}`);
+
                 // If response has body (stateless mode), print it to stdout
                 const text = await response.text();
+                log(`Response body: ${text}`);
                 if (text && text.trim()) {
-                    // console.error(`[Proxy] Response: ${text}`);
                     stdout.write(text + '\n');
                 }
             } catch (err) {
+                log(`Error forwarding: ${err.message}`);
                 console.error(`[Proxy] Error forwarding request: ${err.message}`);
             }
         }
@@ -80,11 +99,48 @@ async function connectSSE() {
 
             for (const event of events) {
                 const lines = event.split('\n');
+                let isEndpointEvent = false;
+
                 for (const line of lines) {
-                    if (line.startsWith('data: ')) {
-                        const data = line.slice(6);
-                        // console.error(`[Proxy] Received SSE: ${data}`);
-                        stdout.write(data + '\n');
+                    if (line.startsWith('event: ')) {
+                        const eventName = line.slice(7).trim();
+                        if (eventName === 'endpoint') {
+                            isEndpointEvent = true;
+                        }
+                    } else if (line.startsWith('data: ')) {
+                        const dataStr = line.slice(6);
+
+                        if (isEndpointEvent) {
+                            try {
+                                log(`Received endpoint event: ${dataStr}`);
+                                // Handle absolute or relative URL
+                                if (dataStr.startsWith('http')) {
+                                    postUrl = dataStr;
+                                } else if (dataStr.startsWith('/')) {
+                                    const baseUrl = new URL(sseUrl).origin;
+                                    postUrl = baseUrl + dataStr;
+                                } else {
+                                    postUrl = dataStr;
+                                }
+                                log(`Updated dynamic POST URL: ${postUrl}`);
+                                isEndpointEvent = false;
+                                continue; // Don't print to stdout
+                            } catch (e) { log(`Error parsing endpoint: ${e}`); }
+                        }
+
+                        try {
+                            const msg = JSON.parse(dataStr);
+                            // Filter early notifications if they might confuse the IDE,
+                            // or pass them if we are confident.
+                            if (msg.method === 'connection/ready' || msg.method === 'server/capabilities') {
+                                log(`Ignored notification: ${msg.method}`);
+                                continue;
+                            }
+                        } catch (e) {
+                            // ignore parse errors
+                        }
+
+                        stdout.write(dataStr + '\n');
                     }
                 }
             }

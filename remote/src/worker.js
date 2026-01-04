@@ -200,6 +200,7 @@ function handleRequest(method, params, id) {
         }
 
         case 'notifications/initialized':
+            return null; // Do not reply to notifications
         case 'ping':
             return jsonRpcResponse(id, {});
 
@@ -254,6 +255,10 @@ export default {
 
                 // Single request
                 const result = handleRequest(body.method, body.params || {}, body.id);
+                if (result === null) {
+                    // JSON-RPC Notifications should not have a response
+                    return new Response(null, { status: 204, headers: corsHeaders });
+                }
                 return new Response(JSON.stringify(result), {
                     headers: { 'Content-Type': 'application/json', ...corsHeaders }
                 });
@@ -271,6 +276,13 @@ export default {
 
             const stream = new ReadableStream({
                 start(controller) {
+                    // Send endpoint event (Required by MCP HTTP Spec)
+                    // This tells the client where to send POST requests
+                    const sessionId = crypto.randomUUID();
+                    const urlObj = new URL(request.url);
+                    const endpointUrl = `${urlObj.origin}/mcp?sessionId=${sessionId}`;
+                    controller.enqueue(encoder.encode(`event: endpoint\ndata: ${endpointUrl}\n\n`));
+
                     // Send initial connection message
                     const initMessage = JSON.stringify({
                         jsonrpc: '2.0',
