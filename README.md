@@ -9,15 +9,34 @@ This project showcases the core capabilities of MCP:
 - **Tools**: Callable functions that perform operations
 - **Resources**: Accessible data sources
 
+## Architecture
+
+```mermaid
+graph TD
+    subgraph Local [Local Machine]
+        Client[Client (IDE/CLI)] <-->|stdio| Server[Local Server (Node.js)]
+        Server <--> Resources[Local Resources]
+    end
+    
+    subgraph Cloud [Cloudflare Workers]
+        RemoteClient[Client (IDE/CLI)] <-->|SSE/POST| Worker[Worker Server]
+        Worker <--> CloudRes[In-Memory Resources]
+    end
+```
+
 ## ✨ Features
 
-- **Dual Mode**: 
-  - 🖥️ **Local**: `stdio` transport using Node.js
-  - ☁️ **Remote**: `HTTP/SSE` transport using Cloudflare Workers
-- **3 Prompts**: Creative writing, Code review, Concept explanation
-- **4 Tools**: Calculator, UUID generator, Weather simulator, String reverser
-- **4 Resources**: Programming quotes, Tech facts
-- **Zero Dependencies** (except MCP SDK)
+| Category | Name | Description | Inputs |
+|----------|------|-------------|--------|
+| **Prompt** | `creative-writing` | Creative writing usage | `topic`, `style` |
+| **Prompt** | `code-review` | Code review template | `language`, `code` |
+| **Prompt** | `explain-concept` | Technical explanation | `concept`, `level` |
+| **Tool** | `calculate` | Basic arithmetic | `op`, `a`, `b` |
+| **Tool** | `generate-uuid` | UUID v4 generator | - |
+| **Tool** | `get-weather` | Simulated weather | `city` |
+| **Tool** | `reverse-string` | String manipulation | `text` |
+| **Resource** | `quotes://all` | Programming quotes | - |
+| **Resource** | `facts://all` | Tech facts | - |
 
 
 
@@ -32,6 +51,7 @@ simplest-mcp/
 ├── remote/              # Cloudflare Workers implementation
 │   ├── src/
 │   │   └── worker.js    # HTTP/SSE transport server
+│   ├── proxy.js         # SSE proxy for remote connection
 │   ├── wrangler.toml    # Workers configuration
 │   └── client.js        # Remote client demo
 ├── resources/           # Shared sample data
@@ -135,7 +155,11 @@ Demonstrates HTTP/SSE transport:
 npm run client:remote -- https://your-worker.workers.dev/sse
 ```
 
-### Using with SDK
+## Client SDK Usage
+
+### Node.js (TypeScript/JavaScript)
+Using `@modelcontextprotocol/sdk`:
+
 ```javascript
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
@@ -148,6 +172,28 @@ const transport = new StdioClientTransport({
 
 const client = new Client({ name: 'my-client', version: '1.0.0' }, { capabilities: {} });
 await client.connect(transport);
+```
+
+### Python
+Using `mcp` package:
+
+```python
+from mcp import Client, StdioServerParameters
+from mcp.client.stdio import stdio_client
+
+server_params = StdioServerParameters(
+    command="node",
+    args=["local/server.js"],
+)
+
+async with stdio_client(server_params) as (read, write):
+    async with Client(read, write) as session:
+        # Initialize
+        await session.initialize()
+        
+        # List tools
+        tools = await session.list_tools()
+        print(tools)
 ```
 
 ### Prompts
