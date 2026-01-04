@@ -21,94 +21,6 @@ This project showcases the core capabilities of MCP:
 
 
 
-## IDE & Agent Integration
-
-### Claude Desktop
-
-To use this server with Claude Desktop, edit your configuration file:
-- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
-
-**For Local Server:**
-```json
-{
-  "mcpServers": {
-    "simplest-mcp": {
-      "command": "node",
-      "args": ["/absolute/path/to/simplest-mcp/server.js"]
-    }
-  }
-}
-```
-
-**For Remote Server (SSE):**
-```json
-{
-    "simplest-mcp-remote": {
-      "command": "node",
-      "args": [
-        "/absolute/path/to/simplest-mcp/remote/proxy.js",
-        "https://simplest-mcp.your-subdomain.workers.dev/sse"
-      ]
-    }
-}
-```
-
-### VS Code (Cline)
-
-1. Create a `.vscode/mcp.json` file in your project:
-
-```json
-{
-  "mcpServers": {
-    "simplest-mcp": {
-      "command": "node",
-      "args": ["/absolute/path/to/simplest-mcp/server.js"]
-    }
-  }
-}
-```
-
-2. Or configure via settings for remote:
-   - Command: `MCP: Add Server`
-   - Name: `simplest-mcp-remote`
-   - Type: `sse`
-   - URL: `https://simplest-mcp.your-subdomain.workers.dev/sse`
-
-
-
-### Using the Client (Local)
-
-The local client demonstrates all features using stdio transport:
-
-```bash
-npm run client:local
-```
-
-### Using the Remote Client
-
-Test the Cloudflare Workers deployment:
-
-```bash
-npm run client:remote -- https://your-worker.workers.dev
-```
-
-### Using with Other Clients (SDK)
-
-```javascript
-import { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
-
-// Local Connection
-const transport = new StdioClientTransport({
-  command: 'node',
-  args: ['local/server.js'],
-});
-
-const client = new Client({ name: 'my-client', version: '1.0.0' }, { capabilities: {} });
-await client.connect(transport);
-```
-
 ## 🏗️ Project Structure
 
 ```
@@ -167,11 +79,13 @@ npm run start:remote
 npm run client:remote -- http://localhost:8787
 ```
 
-## IDE Integration
+## Client Configuration
 
-### Claude Desktop
+Works with **Google Antigravity IDE**, **Claude Desktop**, and **VS Code (Cline)**.
 
-**Local:**
+### 1. Local Server (stdio)
+Add this to your IDE's MCP configuration file (e.g., `claude_desktop_config.json`, `mcp.json`, or Antigravity config):
+
 ```json
 {
   "mcpServers": {
@@ -183,50 +97,10 @@ npm run client:remote -- http://localhost:8787
 }
 ```
 
-**Remote:**
-```json
-{
-    "simplest-mcp-remote": {
-      "command": "node",
-      "args": [
-        "/absolute/path/to/simplest-mcp/remote/proxy.js",
-        "https://your-worker.workers.dev/sse"
-      ]
-    }
-}
-```
+### 2. Remote Server (SSE)
+Use this configuration to connect to the deployed Cloudflare Worker:
 
-### VS Code (Cline)
-
-**Local:** `.vscode/mcp.json`
-```json
-{
-  "mcpServers": {
-    "simplest-mcp": {
-      "command": "node",
-      "args": ["/absolute/path/to/simplest-mcp/local/server.js"]
-    }
-  }
-}
-```
-
-**Remote:** Configure via settings → MCP: Add Server → Type: `sse`
-
-### Google Antigravity IDE
-
-**Local:**
-```json
-{
-  "mcpServers": {
-    "simplest-mcp": {
-      "command": "node",
-      "args": ["/absolute/path/to/simplest-mcp/local/server.js"]
-    }
-  }
-}
-```
-
-**Remote:**
+**JSON Config:**
 ```json
 {
   "mcpServers": {
@@ -239,6 +113,41 @@ npm run client:remote -- http://localhost:8787
     }
   }
 }
+```
+
+**VS Code (Cline) UI:**
+- **Command**: `MCP: Add Server`
+- **Name**: `simplest-mcp-remote`
+- **Type**: `sse`
+- **URL**: `https://your-worker.workers.dev/sse`
+
+## Client Demo
+
+### Local Client
+Demonstrates stdio transport:
+```bash
+npm run client:local
+```
+
+### Remote Client
+Demonstrates HTTP/SSE transport:
+```bash
+npm run client:remote -- https://your-worker.workers.dev/sse
+```
+
+### Using with SDK
+```javascript
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
+
+// Local Connection
+const transport = new StdioClientTransport({
+  command: 'node',
+  args: ['local/server.js'],
+});
+
+const client = new Client({ name: 'my-client', version: '1.0.0' }, { capabilities: {} });
+await client.connect(transport);
 ```
 
 ### Prompts
