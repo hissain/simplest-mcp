@@ -3,6 +3,12 @@
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { spawn } from 'child_process';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const serverPath = join(__dirname, 'server.js');
 
 // ANSI color codes for better output
 const colors = {
@@ -40,14 +46,14 @@ async function main() {
     );
 
     // Start the server process
-    const serverProcess = spawn('node', ['server.js'], {
+    const serverProcess = spawn('node', [serverPath], {
         stdio: ['pipe', 'pipe', 'inherit'],
     });
 
     // Create transport
     const transport = new StdioClientTransport({
         command: 'node',
-        args: ['server.js'],
+        args: [serverPath],
     });
 
     try {

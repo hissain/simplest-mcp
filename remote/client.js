@@ -135,7 +135,7 @@ async function main() {
         log(`\nError: ${error.message}`, '\x1b[31m');
         log(`\nMake sure the server is running:`, colors.yellow);
         log(`  Local: npx wrangler dev`, colors.yellow);
-        log(`  Or provide deployed URL: node remote-client.js https://your-worker.workers.dev\n`, colors.yellow);
+        log(`  Or provide deployed URL: node client.js https://your-worker.workers.dev\n`, colors.yellow);
         process.exit(1);
     }
 }
