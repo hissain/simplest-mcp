@@ -15,17 +15,49 @@ This project showcases the core capabilities of MCP:
 graph LR
     subgraph Local [Local Machine]
         direction TB
-        Client["Client (IDE/CLI)"] <-->|stdio| Server["Local Server (Node.js)"]
-        Server <--> Resources["Local Resources"]
+        Client["Client (IDE/CLI)"]
+        
+        subgraph LServer [Local Server (Node.js)]
+            direction TB
+            LStdi["Stdio Transport"]
+            LHandlers["Request Handlers"]
+            LTools["Tool Manager"]
+            LPrompts["Prompt Manager"]
+            LResources["Resource Manager"]
+            
+            LStdi <--> LHandlers
+            LHandlers --> LTools
+            LHandlers --> LPrompts
+            LHandlers --> LResources
+        end
+        
+        Client <-->|stdio| LStdi
+        LResources <--> LocalFiles["Local Files (JSON)"]
     end
     
     subgraph Cloud [Cloudflare Workers]
         direction TB
-        RemoteClient["Client (IDE/CLI)"] <-->|SSE/POST| Worker["Worker Server"]
-        Worker <--> CloudRes["In-Memory Resources"]
+        RemoteClient["Client (IDE/CLI)"]
+        
+        subgraph WServer [Worker Server]
+            direction TB
+            WHTTP["HTTP/SSE Transport"]
+            WHandlers["Request Handlers"]
+            WTools["Tool Manager"]
+            WPrompts["Prompt Manager"]
+            WResources["Resource Manager"]
+            
+            WHTTP <--> WHandlers
+            WHandlers --> WTools
+            WHandlers --> WPrompts
+            WHandlers --> WResources
+        end
+        
+        RemoteClient <-->|SSE/POST| WHTTP
+        WResources <--> MemRes["In-Memory Data"]
     end
 
-    %% Force side-by-side layout by aligning tops
+    %% Align tops
     Client ~~~ RemoteClient
 ```
 
