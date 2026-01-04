@@ -1,0 +1,24 @@
+{
+    "name": "simplest-mcp",
+    "version": "1.0.0",
+    "description": "A simple MCP (Model Context Protocol) server and client demo showcasing prompts, tools, and resources",
+    "main": "server.js",
+    "type": "module",
+    "scripts": {
+        "server": "node server.js",
+        "client": "node client.js",
+        "test": "./test.sh"
+    },
+    "keywords": [
+        "mcp",
+        "model-context-protocol",
+        "demo",
+        "server",
+        "client"
+    ],
+    "author": "Md. Sazzad Hissain Khan",
+    "license": "MIT",
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.0.4"
+    }
+}

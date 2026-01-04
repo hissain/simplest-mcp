@@ -1,0 +1,44 @@
+{
+    "facts": [
+        {
+            "id": 1,
+            "category": "technology",
+            "text": "The first computer bug was an actual bug - a moth trapped in a Harvard Mark II computer in 1947."
+        },
+        {
+            "id": 2,
+            "category": "technology",
+            "text": "The first 1GB hard drive, released in 1980, weighed over 500 pounds and cost $40,000."
+        },
+        {
+            "id": 3,
+            "category": "programming",
+            "text": "The first programming language was Fortran, developed by IBM in 1957."
+        },
+        {
+            "id": 4,
+            "category": "internet",
+            "text": "The first email was sent by Ray Tomlinson to himself in 1971."
+        },
+        {
+            "id": 5,
+            "category": "programming",
+            "text": "Python was named after Monty Python's Flying Circus, not the snake."
+        },
+        {
+            "id": 6,
+            "category": "technology",
+            "text": "The first computer mouse was made of wood and was invented by Doug Engelbart in 1964."
+        },
+        {
+            "id": 7,
+            "category": "internet",
+            "text": "The first website ever created is still online at info.cern.ch."
+        },
+        {
+            "id": 8,
+            "category": "programming",
+            "text": "JavaScript was created in just 10 days by Brendan Eich in 1995."
+        }
+    ]
+}
