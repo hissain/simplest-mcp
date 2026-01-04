@@ -78,25 +78,7 @@ To use this server with Claude Desktop, edit your configuration file:
    - Type: `sse`
    - URL: `https://simplest-mcp.your-subdomain.workers.dev/sse`
 
-### Google Antigravity IDE
 
-1. Open the Agent Panel
-2. Click the `...` menu -> "Manage MCP Servers"
-3. Click "Edit Config"
-4. Add your server configuration:
-
-```json
-{
-  "mcpServers": {
-    "simplest-mcp": {
-      "command": "node",
-      "args": ["/absolute/path/to/simplest-mcp/server.js"]
-    }
-  }
-}
-```
-
-## Usage Examples
 
 ### Using the Client (Local)
 
@@ -245,6 +227,22 @@ npm run client:remote -- http://localhost:8787
     "simplest-mcp": {
       "command": "node",
       "args": ["/absolute/path/to/simplest-mcp/local/server.js"]
+    }
+  }
+}
+```
+
+**Remote:**
+```json
+{
+  "mcpServers": {
+    "simplest-mcp-remote": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sse-client",
+        "https://your-worker.workers.dev/sse"
+      ]
     }
   }
 }
