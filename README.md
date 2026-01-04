@@ -24,6 +24,9 @@ graph LR
         RemoteClient["Client (IDE/CLI)"] <-->|SSE/POST| Worker["Worker Server"]
         Worker <--> CloudRes["In-Memory Resources"]
     end
+
+    %% Force side-by-side layout
+    Server ~~~ Worker
 ```
 
 ## ✨ Features
