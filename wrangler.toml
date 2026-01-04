@@ -1,9 +1,7 @@
 name = "simplest-mcp"
 main = "worker.js"
 compatibility_date = "2024-01-01"
-
-# Uncomment to enable Node.js compatibility for crypto.randomUUID()
-# compatibility_flags = ["nodejs_compat"]
+compatibility_flags = ["nodejs_compat"]
 
 [vars]
 ENVIRONMENT = "production"

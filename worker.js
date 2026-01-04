@@ -6,8 +6,6 @@
  * but uses HTTP/SSE transport instead of stdio.
  */
 
-import { randomUUID } from 'crypto';
-
 // Sample data (inline for Workers)
 const QUOTES = [
     { id: 1, text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
