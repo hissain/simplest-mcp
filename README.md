@@ -2,33 +2,33 @@
 
 A minimal, complete demonstration of the Model Context Protocol (MCP) featuring both server and client implementations with prompts, tools, and resources.
 
-## 🎯 Overview
+## Overview
 
 This project showcases the core capabilities of MCP:
 - **Prompts**: Pre-defined templates for common tasks
 - **Tools**: Callable functions that perform operations
 - **Resources**: Accessible data sources
 
-## ✨ Features
+## Features
 
-### 📝 Prompts (3)
+### Prompts (3)
 - **creative-writing**: Generate creative writing prompts with customizable topics and styles
 - **code-review**: Create code review prompts for different programming languages
 - **explain-concept**: Generate explanations for technical concepts at various expertise levels
 
-### 🔧 Tools (4)
+### Tools (4)
 - **calculate**: Perform basic arithmetic operations (add, subtract, multiply, divide)
 - **generate-uuid**: Generate random UUIDs
 - **get-weather**: Get simulated weather information for any city
 - **reverse-string**: Reverse any text string
 
-### 📚 Resources (4)
+### Resources (4)
 - **quotes://all**: Collection of programming and inspirational quotes
 - **quotes://random**: Get a random quote
 - **facts://all**: Collection of technology and programming facts
 - **facts://random**: Get a random fact
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Node.js (v18 or higher)
@@ -59,7 +59,7 @@ node client.js
 node server.js
 ```
 
-## 📖 Usage Examples
+## Usage Examples
 
 ### Using the Client
 
@@ -115,7 +115,7 @@ const resource = await client.readResource({
 });
 ```
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 simplest-mcp/
@@ -130,7 +130,7 @@ simplest-mcp/
 └── LICENSE             # MIT License
 ```
 
-## 🔌 API Reference
+## API Reference
 
 ### Prompts
 
@@ -212,7 +212,7 @@ Get a random fact.
 
 **Returns:** Single fact object
 
-## 🧪 Testing
+## Testing
 
 Run the automated test suite:
 
@@ -226,7 +226,7 @@ The test script will:
 3. Run the client demo
 4. Verify all features work correctly
 
-## 🛠️ Development
+## Development
 
 ### Adding New Prompts
 
@@ -256,33 +256,33 @@ Add to the tools list in `ListToolsRequestSchema` handler and implement in `Call
 
 Add resource files to the `resources/` directory and register them in the `ListResourcesRequestSchema` and `ReadResourceRequestSchema` handlers.
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👤 Author
+## Author
 
 **Md. Sazzad Hissain Khan**
 
-## 🤝 Contributing
+## Contributing
 
 Contributions, issues, and feature requests are welcome!
 
-## 🌟 Show Your Support
+## Show Your Support
 
-Give a ⭐️ if this project helped you understand MCP!
+Give a star if this project helped you understand MCP!
 
-## 📚 Resources
+## Resources
 
 - [Model Context Protocol Documentation](https://modelcontextprotocol.io)
 - [MCP SDK on npm](https://www.npmjs.com/package/@modelcontextprotocol/sdk)
 - [MCP Specification](https://spec.modelcontextprotocol.io)
 
-## 🔗 Related Projects
+## Related Projects
 
 - [MCP Servers](https://github.com/modelcontextprotocol/servers) - Official MCP server implementations
 - [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk) - TypeScript SDK for MCP
 
 ---
 
-Made with ❤️ by Md. Sazzad Hissain Khan
+Made with care by Md. Sazzad Hissain Khan
