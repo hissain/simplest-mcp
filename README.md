@@ -25,8 +25,8 @@ graph LR
         Worker <--> CloudRes["In-Memory Resources"]
     end
 
-    %% Force side-by-side layout
-    Server ~~~ Worker
+    %% Force side-by-side layout by aligning tops
+    Client ~~~ RemoteClient
 ```
 
 ## ✨ Features
