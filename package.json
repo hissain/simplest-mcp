@@ -7,7 +7,10 @@
     "scripts": {
         "server": "node server.js",
         "client": "node client.js",
-        "test": "./test.sh"
+        "test": "./test.sh",
+        "dev": "wrangler dev",
+        "deploy": "wrangler deploy",
+        "remote": "node remote-client.js"
     },
     "keywords": [
         "mcp",

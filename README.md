@@ -59,6 +59,62 @@ node client.js
 node server.js
 ```
 
+## Remote Hosting (Cloudflare Workers)
+
+This project includes a Cloudflare Workers version that can be deployed for **free** and accessed from anywhere.
+
+### Deploy to Cloudflare
+
+1. **Install Wrangler CLI**:
+   ```bash
+   npm install -g wrangler
+   ```
+
+2. **Login to Cloudflare**:
+   ```bash
+   wrangler login
+   ```
+
+3. **Deploy**:
+   ```bash
+   wrangler deploy
+   ```
+
+4. Your server will be live at: `https://simplest-mcp.<your-subdomain>.workers.dev`
+
+### Test Locally
+
+```bash
+# Start local dev server
+npx wrangler dev
+
+# In another terminal, run remote client
+node remote-client.js http://localhost:8787
+```
+
+### Test Remote Server
+
+```bash
+# Using your deployed URL
+node remote-client.js https://simplest-mcp.your-subdomain.workers.dev
+```
+
+### API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/` | GET | Server info and health check |
+| `/mcp` | POST | JSON-RPC endpoint for MCP requests |
+| `/sse` | GET | Server-Sent Events for streaming |
+
+### Example: Call a Tool via curl
+
+```bash
+curl -X POST https://your-worker.workers.dev/mcp \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"calculate","arguments":{"operation":"add","a":5,"b":3}}}'
+```
+
 ## Usage Examples
 
 ### Using the Client
