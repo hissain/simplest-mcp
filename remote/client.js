@@ -8,7 +8,17 @@
  */
 
 // Default to local worker dev server, or use provided URL
-const SERVER_URL = process.argv[2] || 'http://localhost:8787';
+let SERVER_URL = process.argv[2] || 'http://localhost:8787';
+
+// Normalize URL: remove trailing slash and /sse suffix if present
+if (SERVER_URL.endsWith('/')) {
+    SERVER_URL = SERVER_URL.slice(0, -1);
+}
+if (SERVER_URL.endsWith('/sse')) {
+    SERVER_URL = SERVER_URL.slice(0, -4); // Remove '/sse'
+}
+// Note: client.js uses the stateless /mcp HTTP endpoint, not SSE.
+
 
 const colors = {
     reset: '\x1b[0m',
