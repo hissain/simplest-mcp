@@ -9,111 +9,17 @@ This project showcases the core capabilities of MCP:
 - **Tools**: Callable functions that perform operations
 - **Resources**: Accessible data sources
 
-## Features
+## ✨ Features
 
-### Prompts (3)
-- **creative-writing**: Generate creative writing prompts with customizable topics and styles
-- **code-review**: Create code review prompts for different programming languages
-- **explain-concept**: Generate explanations for technical concepts at various expertise levels
+- **Dual Mode**: 
+  - 🖥️ **Local**: `stdio` transport using Node.js
+  - ☁️ **Remote**: `HTTP/SSE` transport using Cloudflare Workers
+- **3 Prompts**: Creative writing, Code review, Concept explanation
+- **4 Tools**: Calculator, UUID generator, Weather simulator, String reverser
+- **4 Resources**: Programming quotes, Tech facts
+- **Zero Dependencies** (except MCP SDK)
 
-### Tools (4)
-- **calculate**: Perform basic arithmetic operations (add, subtract, multiply, divide)
-- **generate-uuid**: Generate random UUIDs
-- **get-weather**: Get simulated weather information for any city
-- **reverse-string**: Reverse any text string
 
-### Resources (4)
-- **quotes://all**: Collection of programming and inspirational quotes
-- **quotes://random**: Get a random quote
-- **facts://all**: Collection of technology and programming facts
-- **facts://random**: Get a random fact
-
-## Quick Start
-
-### Prerequisites
-- Node.js (v18 or higher)
-- npm
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/hissain/simplest-mcp.git
-cd simplest-mcp
-
-# Install dependencies
-npm install
-```
-
-### Running the Demo
-
-```bash
-# Run the automated test/demo
-chmod +x test.sh
-./test.sh
-
-# Or run the client directly
-node client.js
-
-# Or run the server standalone (for use with other MCP clients)
-node server.js
-```
-
-## Remote Hosting (Cloudflare Workers)
-
-This project includes a Cloudflare Workers version that can be deployed for **free** and accessed from anywhere.
-
-### Deploy to Cloudflare
-
-1. **Install Wrangler CLI**:
-   ```bash
-   npm install -g wrangler
-   ```
-
-2. **Login to Cloudflare**:
-   ```bash
-   wrangler login
-   ```
-
-3. **Deploy**:
-   ```bash
-   wrangler deploy
-   ```
-
-4. Your server will be live at: `https://simplest-mcp.<your-subdomain>.workers.dev`
-
-### Test Locally
-
-```bash
-# Start local dev server
-npx wrangler dev
-
-# In another terminal, run remote client
-node remote-client.js http://localhost:8787
-```
-
-### Test Remote Server
-
-```bash
-# Using your deployed URL
-node remote-client.js https://simplest-mcp.your-subdomain.workers.dev
-```
-
-### API Endpoints
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/` | GET | Server info and health check |
-| `/mcp` | POST | JSON-RPC endpoint for MCP requests |
-| `/sse` | GET | Server-Sent Events for streaming |
-
-### Example: Call a Tool via curl
-
-```bash
-curl -X POST https://your-worker.workers.dev/mcp \
-  -H "Content-Type: application/json" \
-  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"calculate","arguments":{"operation":"add","a":5,"b":3}}}'
-```
 
 ## IDE & Agent Integration
 
@@ -192,76 +98,157 @@ To use this server with Claude Desktop, edit your configuration file:
 
 ## Usage Examples
 
-### Using the Client
+### Using the Client (Local)
 
-The client automatically demonstrates all features:
+The local client demonstrates all features using stdio transport:
 
 ```bash
-node client.js
+npm run client:local
 ```
 
-This will:
-1. Connect to the MCP server
-2. List all available prompts
-3. Generate a sample prompt
-4. List all available tools
-5. Call each tool with example parameters
-6. List all available resources
-7. Read sample resources
+### Using the Remote Client
 
-### Using the Server with Other Clients
+Test the Cloudflare Workers deployment:
 
-The server can be used with any MCP-compatible client:
+```bash
+npm run client:remote -- https://your-worker.workers.dev
+```
+
+### Using with Other Clients (SDK)
 
 ```javascript
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
+// Local Connection
 const transport = new StdioClientTransport({
   command: 'node',
-  args: ['server.js'],
+  args: ['local/server.js'],
 });
 
 const client = new Client({ name: 'my-client', version: '1.0.0' }, { capabilities: {} });
 await client.connect(transport);
-
-// List prompts
-const prompts = await client.listPrompts();
-
-// Get a prompt
-const prompt = await client.getPrompt({
-  name: 'creative-writing',
-  arguments: { topic: 'AI', style: 'formal' }
-});
-
-// Call a tool
-const result = await client.callTool({
-  name: 'calculate',
-  arguments: { operation: 'add', a: 10, b: 20 }
-});
-
-// Read a resource
-const resource = await client.readResource({
-  uri: 'quotes://random'
-});
 ```
 
-## Project Structure
+## 🏗️ Project Structure
 
 ```
 simplest-mcp/
-├── package.json          # Project configuration and dependencies
-├── server.js            # MCP server implementation
-├── client.js            # MCP client implementation
-├── test.sh             # Automated test script
-├── resources/          # Sample data
-│   ├── quotes.json     # Programming quotes
-│   └── facts.json      # Technology facts
-├── README.md           # This file
-└── LICENSE             # MIT License
+├── local/               # Local MCP server implementation
+│   ├── server.js        # stdio transport server
+│   ├── client.js        # Local client demo
+│   └── test.sh          # Test script
+├── remote/              # Cloudflare Workers implementation
+│   ├── src/
+│   │   └── worker.js    # HTTP/SSE transport server
+│   ├── wrangler.toml    # Workers configuration
+│   └── client.js        # Remote client demo
+├── resources/           # Shared sample data
+│   ├── quotes.json
+│   └── facts.json
+├── package.json         # Project configuration
+└── README.md            # Documentation
 ```
 
-## API Reference
+## 🚀 Quick Start
+
+### Installation
+
+```bash
+git clone https://github.com/hissain/simplest-mcp.git
+cd simplest-mcp
+npm install
+```
+
+### Local Development (stdio)
+
+```bash
+# Run local demo
+npm run client:local
+
+# Or manually
+node local/client.js
+```
+
+### Remote Hosting (Cloudflare Workers)
+
+**Deploy:**
+```bash
+npm install -g wrangler
+wrangler login
+npm run deploy
+```
+
+**Test Remote:**
+```bash
+# Local dev server
+npm run start:remote
+
+# Remote client test
+npm run client:remote -- http://localhost:8787
+```
+
+## IDE Integration
+
+### Claude Desktop
+
+**Local:**
+```json
+{
+  "mcpServers": {
+    "simplest-mcp": {
+      "command": "node",
+      "args": ["/absolute/path/to/simplest-mcp/local/server.js"]
+    }
+  }
+}
+```
+
+**Remote:**
+```json
+{
+  "mcpServers": {
+    "simplest-mcp-remote": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sse-client",
+        "https://your-worker.workers.dev/sse"
+      ]
+    }
+  }
+}
+```
+
+### VS Code (Cline)
+
+**Local:** `.vscode/mcp.json`
+```json
+{
+  "mcpServers": {
+    "simplest-mcp": {
+      "command": "node",
+      "args": ["/absolute/path/to/simplest-mcp/local/server.js"]
+    }
+  }
+}
+```
+
+**Remote:** Configure via settings → MCP: Add Server → Type: `sse`
+
+### Google Antigravity IDE
+
+**Local:**
+```json
+{
+  "mcpServers": {
+    "simplest-mcp": {
+      "command": "node",
+      "args": ["/absolute/path/to/simplest-mcp/local/server.js"]
+    }
+  }
+}
+```
 
 ### Prompts
 

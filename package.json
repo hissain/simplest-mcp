@@ -2,15 +2,15 @@
     "name": "simplest-mcp",
     "version": "1.0.0",
     "description": "A simple MCP (Model Context Protocol) server and client demo showcasing prompts, tools, and resources",
-    "main": "server.js",
+    "main": "local/server.js",
     "type": "module",
     "scripts": {
-        "server": "node server.js",
-        "client": "node client.js",
-        "test": "./test.sh",
-        "dev": "wrangler dev",
-        "deploy": "wrangler deploy",
-        "remote": "node remote-client.js"
+        "start:local": "node local/server.js",
+        "client:local": "node local/client.js",
+        "test:local": "cd local && ./test.sh",
+        "start:remote": "wrangler dev -c remote/wrangler.toml",
+        "deploy": "wrangler deploy -c remote/wrangler.toml",
+        "client:remote": "node remote/client.js"
     },
     "keywords": [
         "mcp",

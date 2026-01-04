@@ -342,7 +342,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
 
     try {
         if (uri.startsWith('quotes://')) {
-            const quotesPath = join(__dirname, 'resources', 'quotes.json');
+            const quotesPath = join(__dirname, '..', 'resources', 'quotes.json');
             const quotesData = JSON.parse(await readFile(quotesPath, 'utf-8'));
 
             if (uri === 'quotes://all') {
@@ -369,7 +369,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
                 };
             }
         } else if (uri.startsWith('facts://')) {
-            const factsPath = join(__dirname, 'resources', 'facts.json');
+            const factsPath = join(__dirname, '..', 'resources', 'facts.json');
             const factsData = JSON.parse(await readFile(factsPath, 'utf-8'));
 
             if (uri === 'facts://all') {
