@@ -61,23 +61,23 @@ graph LR
     Client ~~~ RemoteClient
 ```
 
-## ✨ Features
+## Features
 
 | Category | Name | Description | Inputs |
 |----------|------|-------------|--------|
-| **Prompt** | `creative-writing` | Creative writing usage | `topic`, `style` |
-| **Prompt** | `code-review` | Code review template | `language`, `code` |
-| **Prompt** | `explain-concept` | Technical explanation | `concept`, `level` |
-| **Tool** | `calculate` | Basic arithmetic | `op`, `a`, `b` |
-| **Tool** | `generate-uuid` | UUID v4 generator | - |
-| **Tool** | `get-weather` | Simulated weather | `city` |
-| **Tool** | `reverse-string` | String manipulation | `text` |
-| **Resource** | `quotes://all` | Programming quotes | - |
-| **Resource** | `facts://all` | Tech facts | - |
+| **Prompt** | `creative-writing` | Generates a creative writing prompt based on a topic and style. | `topic`* (string), `style` (string, optional) |
+| **Prompt** | `code-review` | Creates a structured code review request. | `language`* (string), `code`* (string) |
+| **Prompt** | `explain-concept` | Explains a technical concept at a specified expertise level. | `concept`* (string), `level` (string, optional) |
+| **Tool** | `calculate` | Performs basic arithmetic operations (add, subtract, multiply, divide). | `operation`* ("add"\|"subtract"\|"multiply"\|"divide"), `a`* (number), `b`* (number) |
+| **Tool** | `generate-uuid` | Generates a random UUID v4. | - |
+| **Tool** | `get-weather` | Returns simulated weather data for a given city. | `city`* (string) |
+| **Tool** | `reverse-string` | Reverses the provided text string. | `text`* (string) |
+| **Resource** | `quotes://all` | Retrieves a collection of programming quotes. | - |
+| **Resource** | `facts://all` | Retrieves a collection of technology facts. | - |
 
 
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 simplest-mcp/
@@ -98,7 +98,7 @@ simplest-mcp/
 └── README.md            # Documentation
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
