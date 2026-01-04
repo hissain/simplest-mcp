@@ -237,10 +237,9 @@ npm run client:remote -- http://localhost:8787
 {
   "mcpServers": {
     "simplest-mcp-remote": {
-      "command": "npx",
+      "command": "node",
       "args": [
-        "-y",
-        "@modelcontextprotocol/server-sse-client",
+        "/absolute/path/to/simplest-mcp/remote/proxy.js",
         "https://your-worker.workers.dev/sse"
       ]
     }
