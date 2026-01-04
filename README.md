@@ -12,19 +12,18 @@ This project showcases the core capabilities of MCP:
 ## Architecture
 
 ```mermaid
-graph TD
+graph LR
     subgraph Local [Local Machine]
+        direction TB
         Client["Client (IDE/CLI)"] <-->|stdio| Server["Local Server (Node.js)"]
         Server <--> Resources["Local Resources"]
     end
     
     subgraph Cloud [Cloudflare Workers]
+        direction TB
         RemoteClient["Client (IDE/CLI)"] <-->|SSE/POST| Worker["Worker Server"]
         Worker <--> CloudRes["In-Memory Resources"]
     end
-
-    %% Force vertical layout
-    Resources ~~~ RemoteClient
 ```
 
 ## ✨ Features
