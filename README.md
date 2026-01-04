@@ -14,13 +14,13 @@ This project showcases the core capabilities of MCP:
 ```mermaid
 graph TD
     subgraph Local [Local Machine]
-        Client[Client (IDE/CLI)] <-->|stdio| Server[Local Server (Node.js)]
-        Server <--> Resources[Local Resources]
+        Client["Client (IDE/CLI)"] <-->|stdio| Server["Local Server (Node.js)"]
+        Server <--> Resources["Local Resources"]
     end
     
     subgraph Cloud [Cloudflare Workers]
-        RemoteClient[Client (IDE/CLI)] <-->|SSE/POST| Worker[Worker Server]
-        Worker <--> CloudRes[In-Memory Resources]
+        RemoteClient["Client (IDE/CLI)"] <-->|SSE/POST| Worker["Worker Server"]
+        Worker <--> CloudRes["In-Memory Resources"]
     end
 ```
 
