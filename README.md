@@ -115,6 +115,81 @@ curl -X POST https://your-worker.workers.dev/mcp \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"calculate","arguments":{"operation":"add","a":5,"b":3}}}'
 ```
 
+## IDE & Agent Integration
+
+### Claude Desktop
+
+To use this server with Claude Desktop, edit your configuration file:
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+**For Local Server:**
+```json
+{
+  "mcpServers": {
+    "simplest-mcp": {
+      "command": "node",
+      "args": ["/absolute/path/to/simplest-mcp/server.js"]
+    }
+  }
+}
+```
+
+**For Remote Server (SSE):**
+```json
+{
+  "mcpServers": {
+    "simplest-mcp-remote": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sse-client",
+        "https://simplest-mcp.your-subdomain.workers.dev/sse"
+      ]
+    }
+  }
+}
+```
+
+### VS Code (Cline)
+
+1. Create a `.vscode/mcp.json` file in your project:
+
+```json
+{
+  "mcpServers": {
+    "simplest-mcp": {
+      "command": "node",
+      "args": ["/absolute/path/to/simplest-mcp/server.js"]
+    }
+  }
+}
+```
+
+2. Or configure via settings for remote:
+   - Command: `MCP: Add Server`
+   - Name: `simplest-mcp-remote`
+   - Type: `sse`
+   - URL: `https://simplest-mcp.your-subdomain.workers.dev/sse`
+
+### Google Antigravity IDE
+
+1. Open the Agent Panel
+2. Click the `...` menu -> "Manage MCP Servers"
+3. Click "Edit Config"
+4. Add your server configuration:
+
+```json
+{
+  "mcpServers": {
+    "simplest-mcp": {
+      "command": "node",
+      "args": ["/absolute/path/to/simplest-mcp/server.js"]
+    }
+  }
+}
+```
+
 ## Usage Examples
 
 ### Using the Client
