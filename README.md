@@ -17,7 +17,7 @@ graph LR
         direction TB
         Client["Client (IDE/CLI)"]
         
-        subgraph LServer [Local Server (Node.js)]
+        subgraph LServer ["Local Server (Node.js)"]
             direction TB
             LStdi["Stdio Transport"]
             LHandlers["Request Handlers"]
